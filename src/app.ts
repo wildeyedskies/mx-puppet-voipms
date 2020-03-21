@@ -26,6 +26,7 @@ export class App {
 			},
 			user: {
 				userId: did,
+				name: did,
 				puppetId,
 			},
 		} as IReceiveParams;

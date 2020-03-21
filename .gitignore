@@ -3,3 +3,5 @@ voipms-registration.yaml
 node_modules
 build
 *.db
+*-audit.json
+bridge.log.*
