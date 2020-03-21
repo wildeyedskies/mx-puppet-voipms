@@ -5,7 +5,7 @@ It is based on [mx-puppet-bridge](https://github.com/Sorunome/mx-puppet-bridge).
 Note that this bridge does not provide SIP or call functionallity and is only for bridging SMS messages.
 At this time MMS and shortcode SMS are unsupported.
 
-## what is voip.ms?
+### what is voip.ms?
 
 [voip.ms](https://voip.ms) is a voice over ip (voip) provider. They provide a REST api to send and receive SMS for users of their platform. Docs for the SMS capability are [here](https://wiki.voip.ms/article/SMS).
 

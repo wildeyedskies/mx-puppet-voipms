@@ -19,7 +19,7 @@ export interface IVoipMSDetails {
 }
 
 export interface IVoipMSSms {
-  id: number
+  id: string
   date: string
   type: SmsType
   did: string
@@ -37,18 +37,19 @@ export class Client extends EventEmitter {
   public start() {
     // to accont for timing issues we run every 30 seconds, and check the past 35 seconds of messages
     // we then keep a single checks worth of cache so that we do not duplicate sending messages
-    let lastRun: number[] = []
+    let lastRun: string[] = []
     this.smsCheckInterval = setInterval(async () => {
       log.debug('checking messages');
 
       const from = moment().subtract(35, 'seconds');
       const sms = await this.getSMS(SmsType.Received, from);
-      log.debug(`fetched new messages since ${from} received ${sms}`);
-      
+      log.debug(`fetched new messages since ${from} received ${JSON.stringify(sms)}`);
+
       let newMessages = sms.filter((m: IVoipMSSms) => !lastRun.includes(m.id));
       lastRun = newMessages.map((m: IVoipMSSms) => m.id);
 
-      newMessages.forEach((m: IVoipMSSms) => this.emit('message', m))
+      // we reverse the array here to get the messages in order
+      newMessages.reverse().forEach((m: IVoipMSSms) => this.emit('message', m))
     }, 30000);
   }
 

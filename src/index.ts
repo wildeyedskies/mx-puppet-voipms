@@ -47,10 +47,6 @@ if (options.help) {
 
 // here we define some information about our protocol, what features it supports etc.
 const protocol = {
-	features: {
-		file: false, 
-		presence: false,
-	},
 	id: "voipms", // an internal ID for the protocol, all lowercase
 	displayname: "VoipMS", // a human-readable name of the protocol
 	externalUrl: "https://voip.ms",
@@ -68,7 +64,7 @@ if (options.register) {
 			prefix: "_voipmspuppet_",
 			id: "voipms-puppet",
 			url: `http://${puppet.Config.bridge.bindAddress}:${puppet.Config.bridge.port}`,
-		} as IPuppetBridgeRegOpts);
+		});
 	} catch (err) {
 		// tslint:disable-next-line:no-console
 		console.log("Couldn't generate registration file:", err);
@@ -97,15 +93,15 @@ async function run() {
 	puppet.setGetDescHook(async (puppetId: number, data: any): Promise<string> => {
 		// here we receive the puppet ID and the data associated with that puppet
 		// we are expected to return a displayable name for that particular puppet
-		return `VoipMS puppet ${data.name}`;
+		return `VoipMS puppet ${data.user} ${data.did}`;
 	});
 	// required: get data from string hook
 	puppet.setGetDataFromStrHook(async (str: string): Promise<IRetData> => {
 		// this is called when someone tires to link a new puppet
 		// for us the str is our own name and if it is "invalid" it fails
-		const retData = {
+		const retData: IRetData = {
 			success: false,
-		} as IRetData;
+		};
 
 		const [ user, api_password, did ] = str.split(' ');
 		if (!user || !api_password || !did) {
