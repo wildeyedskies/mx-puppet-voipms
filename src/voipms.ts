@@ -43,9 +43,12 @@ export class Client extends EventEmitter {
 
       const from = moment().subtract(35, 'seconds');
       const sms = await this.getSMS(SmsType.Received, from);
+      const mms = await this.getMMS(SmsType.Received, from);
       log.debug(`fetched new messages since ${from} received ${JSON.stringify(sms)}`);
 
-      let newMessages = sms.filter((m: IVoipMSSms) => !lastRun.includes(m.id));
+      const messages = sms.concat(mms); // zoop!
+
+      let newMessages = messages.filter((m: IVoipMSSms) => !lastRun.includes(m.id));
       lastRun = newMessages.map((m: IVoipMSSms) => m.id);
 
       // we reverse the array here to get the messages in order
@@ -80,6 +83,26 @@ export class Client extends EventEmitter {
         api_username: this.data.user,
         api_password: this.data.api_password,
         method: 'getSMS',
+        type: type,
+        did: this.data.did,
+        from: from.tz('America/New_York').format('YYYY-MM-DD HH:mm:ss'),
+        timezone: -5
+      }
+    })
+
+    if (r.data.status !== 'success') {
+      return []
+    }
+
+    return r.data.sms
+  }
+
+  async getMMS(type: SmsType, from: moment.Moment): Promise<IVoipMSSms[]> {
+    const r = await get(API_URL, {
+      params: {
+        api_username: this.data.user,
+        api_password: this.data.api_password,
+        method: 'getMMS',
         type: type,
         did: this.data.did,
         from: from.tz('America/New_York').format('YYYY-MM-DD HH:mm:ss'),
