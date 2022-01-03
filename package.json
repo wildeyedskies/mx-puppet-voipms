@@ -1,6 +1,6 @@
 {
-  "name": "mx-puppet-echo",
-  "version": "0.0.0",
+  "name": "mx-puppet-voipms",
+  "version": "0.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,15 +9,15 @@
     "start": "npm run-script build && node ./build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Sorunome",
+  "author": "wildeyedskies",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "command-line-args": "^5.1.1",
     "command-line-usage": "^5.0.5",
     "js-yaml": "^3.13.1",
-    "matrix-bot-sdk": "^0.5.3",
+    "matrix-bot-sdk": "^0.5.19",
     "moment-timezone": "^0.5.28",
-    "mx-puppet-bridge": "0.0.25",
+    "mx-puppet-bridge": "^0.1.6",
     "tslint": "^5.17.0",
     "typescript": "^3.7.4"
   },
