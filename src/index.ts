@@ -58,7 +58,7 @@ const puppet = new PuppetBridge(options["registration-file"], options.config, pr
 // check if the options were to register
 if (options.register) {
 	// okay, all we have to do is generate a registration file
-	puppet.readConfig();
+	puppet.readConfig(false);
 	try {
 		puppet.generateRegistration({
 			prefix: "_voipmspuppet_",
