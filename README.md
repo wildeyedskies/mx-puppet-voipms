@@ -12,6 +12,7 @@ At this time MMS and shortcode SMS are unsupported.
 ## Installation
 ```bash
 git clone https://github.com/wildeyedskies/mx-puppet-voipms
+cd mx-puppet-voipms
 yarn install
 yarn run build
 ```
