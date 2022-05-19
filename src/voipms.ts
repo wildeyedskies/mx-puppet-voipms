@@ -63,12 +63,14 @@ export class Client extends EventEmitter {
   }
 
   async sendSMS(dst: string, message: string) {
-    log.verbose(`Sending message "${message}" to ${dst}`)
+	let _method = getMethod(message);
+    log.verbose(`Sending message "${message}" to ${dst} via ${_method}`);
+
     return await get(API_URL, {
       params: {
         api_username: this.data.user,
         api_password: this.data.api_password,
-        method: 'sendSMS',
+        method: _method,
         did: this.data.did,
         dst,
         message
@@ -121,4 +123,14 @@ export class Client extends EventEmitter {
 export function validatePhoneNumber(number: string): boolean {
   const validator = /^[0-9]{10}$/;
   return number.match(validator) !== null;
+}
+
+function getMethod(message: string) {
+	let method = 'sendSMS'
+	const emojiRegex = /\p{Emoji}/u;
+	if (message.length >= 160 || emojiRegex.test(message)) {
+		method = 'sendMMS'
+	}
+
+	return method;
 }
