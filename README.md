@@ -1,6 +1,6 @@
 # mx-puppet-voipms
 This is a puppeting bridge for the SMS functionallity provided by [voip.ms](https://voip.ms).
-It is based on [mx-puppet-bridge](https://github.com/Sorunome/mx-puppet-bridge).
+It is based on [mx-puppet-bridge](https://gitlab.com/mx-puppet/mx-puppet-bridge).
 
 Note that this bridge does not provide SIP or call functionallity and is only for bridging SMS messages.
 At this time MMS and shortcode SMS are unsupported.
@@ -11,7 +11,8 @@ At this time MMS and shortcode SMS are unsupported.
 
 ## Installation
 ```bash
-git pull https://github.com/zoenb/mx-puppet-voipms
+git clone https://github.com/wildeyedskies/mx-puppet-voipms
+cd mx-puppet-voipms
 yarn install
 yarn run build
 ```
@@ -30,4 +31,4 @@ send an SMS to the corresponding phone number.
 
 ### Credits
 
-A massive thank you to [Sorunome](https://github.com/Sorunome) for creating the [mx-puppet-bridge](https://github.com/Sorunome/mx-puppet-bridge) library.
+A massive thank you to [Sorunome](https://github.com/Sorunome) for creating the [mx-puppet-bridge](https://gitlab.com/mx-puppet/mx-puppet-bridge) library.
