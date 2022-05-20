@@ -35,7 +35,7 @@ export class Client extends EventEmitter {
   smsCheckInterval?: any;
 
   public start() {
-    // to accont for timing issues we run every 30 seconds, and check the past 35 seconds of messages
+    // to account for timing issues we run every 30 seconds, and check the past 35 seconds of messages
     // we then keep a single checks worth of cache so that we do not duplicate sending messages
     let lastRun: string[] = []
     this.smsCheckInterval = setInterval(async () => {
@@ -59,7 +59,7 @@ export class Client extends EventEmitter {
     }
   }
 
-  async sendSMS(dst: string, message: string) {
+  async sendMessage(dst: string, message: string) {
     let _method = getMethod(message);
     log.verbose(`Sending message "${message}" to ${dst} via ${_method}`);
 
@@ -76,26 +76,6 @@ export class Client extends EventEmitter {
   }
 
   // See this issue for timezone explanation https://github.com/michaelkourlas/voipms-sms-client/issues/35
-  async getSMS(type: SmsType, from: moment.Moment): Promise<IVoipMSSms[]> {
-    const r = await get(API_URL, {
-      params: {
-        api_username: this.data.user,
-        api_password: this.data.api_password,
-        method: 'getSMS',
-        type: type,
-        did: this.data.did,
-        from: from.tz('America/New_York').format('YYYY-MM-DD HH:mm:ss'),
-        timezone: -5
-      }
-    })
-
-    if (r.data.status !== 'success') {
-      return []
-    }
-
-    return r.data.sms
-  }
-
   async getMessages(type: SmsType, from: moment.Moment): Promise<IVoipMSSms[]> {
     const r = await get(API_URL, {
       params: {

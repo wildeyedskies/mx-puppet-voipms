@@ -71,7 +71,7 @@ export class App {
 			return;
         }
         
-        await p.client.sendSMS(room.roomId, data.body);
+        await p.client.sendMessage(room.roomId, data.body);
     }
 
     public async handleSMSMessage(puppetId: number, data: IVoipMSSms) {
