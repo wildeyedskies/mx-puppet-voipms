@@ -41,12 +41,9 @@ export class Client extends EventEmitter {
     this.smsCheckInterval = setInterval(async () => {
       log.debug('checking messages');
 
-      const from = moment().subtract(35, 'seconds');
-      const sms = await this.getSMS(SmsType.Received, from);
-      const mms = await this.getMMS(SmsType.Received, from);
-      log.debug(`fetched new messages since ${from} received ${JSON.stringify(sms)}`);
-
-      const messages = sms.concat(mms); // zoop!
+      const from = moment().subtract(1, 'minutes');
+      const messages = await this.getMessages(SmsType.Received, from);
+      log.debug(`fetched new messages since ${from} received ${JSON.stringify(messages)}`);
 
       let newMessages = messages.filter((m: IVoipMSSms) => !lastRun.includes(m.id));
       lastRun = newMessages.map((m: IVoipMSSms) => m.id);
@@ -63,7 +60,7 @@ export class Client extends EventEmitter {
   }
 
   async sendSMS(dst: string, message: string) {
-	let _method = getMethod(message);
+    let _method = getMethod(message);
     log.verbose(`Sending message "${message}" to ${dst} via ${_method}`);
 
     return await get(API_URL, {
@@ -99,7 +96,7 @@ export class Client extends EventEmitter {
     return r.data.sms
   }
 
-  async getMMS(type: SmsType, from: moment.Moment): Promise<IVoipMSSms[]> {
+  async getMessages(type: SmsType, from: moment.Moment): Promise<IVoipMSSms[]> {
     const r = await get(API_URL, {
       params: {
         api_username: this.data.user,
@@ -108,7 +105,8 @@ export class Client extends EventEmitter {
         type: type,
         did: this.data.did,
         from: from.tz('America/New_York').format('YYYY-MM-DD HH:mm:ss'),
-        timezone: -5
+        timezone: -5,
+        all_messages: 1
       }
     })
 
@@ -126,11 +124,11 @@ export function validatePhoneNumber(number: string): boolean {
 }
 
 function getMethod(message: string) {
-	let method = 'sendSMS'
-	const emojiRegex = /\p{Emoji}/u;
-	if (message.length >= 160 || emojiRegex.test(message)) {
-		method = 'sendMMS'
-	}
+    let method = 'sendSMS'
+    const emojiRegex = /\p{Emoji}/u;
+    if (message.length >= 160 || emojiRegex.test(message)) {
+        method = 'sendMMS'
+    }
 
-	return method;
+    return method;
 }
