@@ -25,6 +25,7 @@ export interface IVoipMSSms {
   did: string
   contact: string
   message: string
+  col_media1: string
 }
 
 export class Client extends EventEmitter {
@@ -49,7 +50,14 @@ export class Client extends EventEmitter {
       lastRun = newMessages.map((m: IVoipMSSms) => m.id);
 
       // we reverse the array here to get the messages in order
-      newMessages.reverse().forEach((m: IVoipMSSms) => this.emit('message', m))
+      newMessages.reverse().forEach((m: IVoipMSSms) => {
+		  if (m.message) {
+			  this.emit('message', m)
+		  }
+		  if (m.col_media1){
+			  this.emit('file', m)
+		  }
+	  })
     }, 30000);
   }
 

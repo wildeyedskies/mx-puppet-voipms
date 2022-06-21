@@ -45,6 +45,9 @@ export class App {
         client.on("message", data => {
             this.handleSMSMessage(puppetId, data);
         });
+		client.on("file", data => {
+			this.handleSMSFile(puppetId, data);
+		});
 
 		this.puppets[puppetId] = {
 			client,
@@ -90,6 +93,11 @@ export class App {
             body: data.message
         })
     }
+
+	public async handleSMSFile(puppetId: number, data: IVoipMSSms) {
+		const params = this.getSendParams(puppetId, data.contact)
+		await this.puppet.sendFileDetect(params, data.col_media1)
+	}
 
     public async createRoom(room: IRemoteRoom): Promise<IRemoteRoom | null> {
 		// this is called when the puppet bridge wants to create a new room
