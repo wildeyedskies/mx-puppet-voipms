@@ -1,4 +1,4 @@
-import { PuppetBridge, IRemoteRoom, IMessageEvent, IReceiveParams, IRemoteUser } from "mx-puppet-bridge";
+import { PuppetBridge, IRemoteRoom, IMessageEvent, IFileEvent, IReceiveParams, IRemoteUser } from "mx-puppet-bridge";
 import { Client, IVoipMSSms } from "./voipms";
 
 // this interface is to hold all data on a single puppet
@@ -53,7 +53,7 @@ export class App {
     }
     
     public deletePuppet(puppetId: number) {
-		// this is called when we need to delte a puppet
+		// this is called when we need to delete a puppet
 		const p = this.puppets[puppetId];
 		if (!p) {
 			// puppet doesn't exist, nothing to do
@@ -65,7 +65,7 @@ export class App {
 	}
 
     public async handleMatrixMessage(room: IRemoteRoom, data: IMessageEvent, event: any) {
-        		// first we check if the puppet exists
+		// first we check if the puppet exists
 		const p = this.puppets[room.puppetId];
 		if (!p) {
 			return;
@@ -73,6 +73,16 @@ export class App {
         
         await p.client.sendMessage(room.roomId, data.body);
     }
+
+	public async handleMatrixFile(room: IRemoteRoom, data: IFileEvent, event: any) {
+		// first we check if the puppet exists
+		const p = this.puppets[room.puppetId];
+		if (!p) {
+			return;
+		}
+
+		await p.client.sendMedia(room.roomId, data.url);
+	}
 
     public async handleSMSMessage(puppetId: number, data: IVoipMSSms) {
         const params = this.getSendParams(puppetId, data.contact)

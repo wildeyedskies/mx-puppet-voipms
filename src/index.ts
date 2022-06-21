@@ -47,6 +47,9 @@ if (options.help) {
 
 // here we define some information about our protocol, what features it supports etc.
 const protocol = {
+	features: {
+		file: true
+	},
 	id: "voipms", // an internal ID for the protocol, all lowercase
 	displayname: "VoipMS", // a human-readable name of the protocol
 	externalUrl: "https://voip.ms",
@@ -85,6 +88,8 @@ async function run() {
 	puppet.on("puppetDelete", app.deletePuppet.bind(app));
 	// required: listen to when a message is received from matrix
 	puppet.on("message", app.handleMatrixMessage.bind(app));
+	// optional (since we enabled it in features): listen to files received from matrix
+	puppet.on("file", app.handleMatrixFile.bind(app));
 	// optional: create room hook (needed for initiating DMs on matrix)
 	puppet.setCreateRoomHook(app.createRoom.bind(app));
 	// optional: get DM room ID hook (needed for initiating DMs on matrix)
