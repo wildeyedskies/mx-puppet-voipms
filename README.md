@@ -2,8 +2,8 @@
 This is a puppeting bridge for the SMS functionallity provided by [voip.ms](https://voip.ms).
 It is based on [mx-puppet-bridge](https://gitlab.com/mx-puppet/mx-puppet-bridge).
 
-Note that this bridge does not provide SIP or call functionallity and is only for bridging SMS messages.
-At this time MMS and shortcode SMS are unsupported.
+Note that this bridge does not provide SIP or call functionallity and is only for bridging SMS messages and media files (pictures, videos).
+Shortcode SMS are unsupported due to a limitation of the voip.ms API.
 
 ### what is voip.ms?
 

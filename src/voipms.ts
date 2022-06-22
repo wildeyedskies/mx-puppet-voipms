@@ -25,6 +25,7 @@ export interface IVoipMSSms {
   did: string
   contact: string
   message: string
+  col_media1: string
 }
 
 export class Client extends EventEmitter {
@@ -49,7 +50,14 @@ export class Client extends EventEmitter {
       lastRun = newMessages.map((m: IVoipMSSms) => m.id);
 
       // we reverse the array here to get the messages in order
-      newMessages.reverse().forEach((m: IVoipMSSms) => this.emit('message', m))
+      newMessages.reverse().forEach((m: IVoipMSSms) => {
+		  if (m.message) {
+			  this.emit('message', m)
+		  }
+		  if (m.col_media1){
+			  this.emit('file', m)
+		  }
+	  })
     }, 30000);
   }
 
@@ -73,6 +81,22 @@ export class Client extends EventEmitter {
         message
       }
     })
+  }
+
+  async sendMedia(dst: string, mediaUrl: string) {
+    log.verbose(`Sending media "${mediaUrl}" to ${dst} via sendMMS`);
+
+    let voipReturnValue = await get(API_URL, {
+      params: {
+        api_username: this.data.user,
+        api_password: this.data.api_password,
+        method: 'sendMMS',
+        did: this.data.did,
+        dst,
+        media1: mediaUrl
+      }
+    })
+	log.debug(`Got return message "${voipReturnValue}"`);
   }
 
   // See this issue for timezone explanation https://github.com/michaelkourlas/voipms-sms-client/issues/35
