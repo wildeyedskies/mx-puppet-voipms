@@ -16,7 +16,7 @@
     "command-line-usage": "^5.0.5",
     "js-yaml": "^3.13.1",
     "matrix-bot-sdk": "^0.5.19",
-    "moment-timezone": "^0.5.28",
+    "moment-timezone": "^0.5.35",
     "mx-puppet-bridge": "^0.1.6",
     "tslint": "^5.17.0",
     "typescript": "^3.7.4"
