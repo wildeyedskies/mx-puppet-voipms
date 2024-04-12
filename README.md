@@ -1,3 +1,7 @@
+# Deprecated
+
+It has been years since I wrote this. The mx-puppet-brige framework it is based upon is no longer well supported. I am not able to get the docker container to build anymore. I really don't recommend using this without forking and updating the dependencies at the very least.
+
 # mx-puppet-voipms
 This is a puppeting bridge for the SMS functionallity provided by [voip.ms](https://voip.ms).
 It is based on [mx-puppet-bridge](https://gitlab.com/mx-puppet/mx-puppet-bridge).
